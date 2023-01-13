@@ -1,5 +1,7 @@
 package com.smhrd.echo.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,10 @@ public class UserService {
 	
 	public void joinUser(UserInfo userInfo) {
 		userMapper.joinUser(userInfo);
+	}
+
+	public List<UserInfo> loginUser(String user_id) {
+		return userMapper.loginUser(user_id);
 	}
 
 
