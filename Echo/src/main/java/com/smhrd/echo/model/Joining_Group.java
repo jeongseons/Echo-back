@@ -20,7 +20,11 @@ public class Joining_Group {
 	//그룹 권한
 	private String group_auth;
 	
-	//가입한 그룹리스트 정보용 필드 정보
-	//그룹 이미지
+	//가입한 회원 정보용 필드 정보
+	//프로필 이미지
+	private String user_profile_img;
+	
+	//유저 닉네임
+	private String user_nick;
 	
 }
