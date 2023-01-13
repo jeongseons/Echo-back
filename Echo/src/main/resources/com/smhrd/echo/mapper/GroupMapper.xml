@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smhrd.echo.mapper.GroupMapper">
+
+<select id ="getGroupList" resultType="com.smhrd.echo.model.Group">
+	select a.group_seq as group_seq, a.group_profile_img as group_profile_img, a.group_name as group_name, 
+	(select count(*) from joining_group where group_seq = a.group_seq) as group_current, 
+	a.user_max as user_max, b.group_auth as group_auth 
+	from group_info a, joining_group b 
+	where a.group_seq = b.group_seq and b.user_id = #{id}
+</select>
+
+</mapper>
