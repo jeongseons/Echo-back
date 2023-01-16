@@ -13,11 +13,14 @@ public interface GroupMapper {
 	public List<Group> getGroupList(String id);
 	
 	// 그룹에 가입한 회원 정보
-	public List<Joining_Group> getPersonList(int seq);;
+	public List<Joining_Group> getPersonList(int seq);
 	
 	// 그룹 회원 강퇴
 	public void dropUser(String nick);
 	
 	// 그룹 생성
 	public void addGroup(Group group);
+
+	// 그룹장 생성
+	public void addGroupOwner(Group group);	
 }

@@ -27,9 +27,14 @@ public class GroupService {
 		groupMapper.addGroup(group);	
 	}
 	
+	public void addGroupOwner(Group group) {
+		groupMapper.addGroupOwner(group);	
+	}
+	
 	public void dropUser(String nick) {
 		groupMapper.dropUser(nick);
 	}
+	
 	
 	
 }

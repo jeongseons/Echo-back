@@ -17,14 +17,20 @@
 </select>
 
 <insert id ="addGroup">
+	<selectKey resultType="int" keyProperty="group_seq" order="AFTER">
+		select max(group_seq) from group_info
+	</selectKey>
 	INSERT INTO group_info(group_seq, group_owner_id, group_name, group_area, user_max, group_age, group_level, group_dt, 
 	group_yn, group_gender, group_type, group_profile_img, group_detail)
 	VALUES(null, #{group_owner_id}, #{group_name}, #{group_area}, #{user_max}, #{group_age}, #{group_level}, #{group_dt}, 
 	#{group_yn}, #{group_gender}, #{group_type}, #{group_profile_img}, #{group_detail})
-	<selectKey resultType="int" keyProperty="group_seq" order="AFTER">
-		select max(group_seq) from joining_group
-	</selectKey>
 </insert>
+
+<insert id = "addGroupOwner">
+	insert into joining_group values(null, #{group_owner_id}, #{group_seq}, NOW(), "y")
+</insert>
+
+
 
 <delete id ="dropUser">
 delete from joining_group where user_id = (select user_id from user_info where user_nick = #{nick})
