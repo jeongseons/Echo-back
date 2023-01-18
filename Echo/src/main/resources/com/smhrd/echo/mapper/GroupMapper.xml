@@ -2,39 +2,68 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.smhrd.echo.mapper.GroupMapper">
 
-<select id ="getGroupList" resultType="com.smhrd.echo.model.Group">
-	select a.group_seq as group_seq, a.group_profile_img as group_profile_img, a.group_name as group_name, 
-	(select count(*) from joining_group where group_seq = a.group_seq) as group_current, 
-	a.user_max as user_max, b.group_auth as group_auth 
-	from group_info a, joining_group b 
-	where a.group_seq = b.group_seq and b.user_id = #{id}
-</select>
+	<select id="getGroupList"
+		resultType="com.smhrd.echo.model.Group">
+		select a.group_seq as group_seq, a.group_profile_img as
+		group_profile_img,
+		a.group_name as group_name,
+		(select count(*) from
+		joining_group where group_seq = a.group_seq) as
+		group_current,
+		a.user_max as user_max, b.group_auth as group_auth
+		from group_info a,
+		joining_group b
+		where a.group_seq = b.group_seq and b.user_id = #{id}
+	</select>
 
-<select id ="getPersonList" resultType="com.smhrd.echo.model.Joining_Group">
-	select a.user_nick as user_nick, a.user_profile_img as user_profile_img, b.group_auth as group_auth
-	from user_info a, joining_group b 
-	where a.user_id = b.user_id and b.group_seq = #{seq}
-</select>
+	<select id="getPersonList"
+		resultType="com.smhrd.echo.model.Joining_Group">
+		select a.user_nick as user_nick, a.user_profile_img as
+		user_profile_img,
+		b.group_auth as group_auth
+		from user_info a,
+		joining_group b
+		where a.user_id = b.user_id and b.group_seq = #{seq}
+	</select>
 
-<insert id ="addGroup">
-	<selectKey resultType="int" keyProperty="group_seq" order="AFTER">
-		select max(group_seq) from group_info
-	</selectKey>
-	INSERT INTO group_info(group_seq, group_owner_id, group_name, group_area, user_max, group_age, group_level, group_dt, 
-	group_yn, group_gender, group_type, group_profile_img, group_detail)
-	VALUES(null, #{group_owner_id}, #{group_name}, #{group_area}, #{user_max}, #{group_age}, #{group_level}, #{group_dt}, 
-	#{group_yn}, #{group_gender}, #{group_type}, #{group_profile_img}, #{group_detail})
-</insert>
+	<insert id="addGroup">
+		<selectKey resultType="int" keyProperty="group_seq"
+			order="AFTER">
+			select max(group_seq) from group_info
+		</selectKey>
+		INSERT INTO group_info(group_seq, group_owner_id, group_name,
+		group_area, user_max, group_age, group_level, group_dt,
+		group_yn,
+		group_gender, group_type, group_profile_img, group_detail)
+		VALUES(null, #{group_owner_id}, #{group_name}, #{group_area},
+		#{user_max}, #{group_age}, #{group_level}, #{group_dt},
+		#{group_yn},
+		#{group_gender}, #{group_type}, #{group_profile_img},
+		#{group_detail})
+	</insert>
 
-<insert id = "addGroupOwner">
-	insert into joining_group values(null, #{group_owner_id}, #{group_seq}, NOW(), "y")
-</insert>
+	<insert id="addGroupOwner">
+		insert into joining_group values(null,
+		#{group_owner_id}, #{group_seq},
+		NOW(), "y")
+	</insert>
 
+	<delete id="dropUser">
+		delete from joining_group where user_id = (select
+		user_id from user_info
+		where user_nick = #{nick})
+	</delete>
 
+	<insert id="addCal">
+		insert into calendar_info values(null, #{cal_dt},
+		#{cal_content}, #{group_seq})
+	</insert>
 
-<delete id ="dropUser">
-delete from joining_group where user_id = (select user_id from user_info where user_nick = #{nick})
-</delete>
-
+	<select id="getCalList"
+		resultType="com.smhrd.echo.model.Calendar">
+		select cal_dt, cal_content, group_seq
+		from calendar_info
+		where group_seq = #{seq}
+	</select>
 
 </mapper>

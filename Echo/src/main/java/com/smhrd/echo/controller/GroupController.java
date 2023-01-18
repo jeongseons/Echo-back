@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.smhrd.echo.service.GroupService;
+import com.smhrd.echo.model.Calendar;
 import com.smhrd.echo.model.Group;
 import com.smhrd.echo.model.Joining_Group;
 import com.smhrd.echo.model.UserInfo;
@@ -62,6 +63,23 @@ public class GroupController {
     	return 1;
     	}
 	
+	@PostMapping("/api/addcal")
+	public int addCal(@RequestBody Calendar calendar) {// 일정 생성
+		System.out.println(calendar);
+
+		groupService.addCal(calendar);
+
+    	return 1;
+    	}
+	
+    @GetMapping("/api/callist")
+    public List<Calendar> getCalList(@RequestParam int group_seq) { //그룹의 일정 불러오기
+        
+    	List<Calendar> CalList= groupService.getCalList(group_seq);
+    	System.out.printf("확인용 : %s%n",CalList);
+    	
+    	return CalList;
+    }
 
 	
 }
