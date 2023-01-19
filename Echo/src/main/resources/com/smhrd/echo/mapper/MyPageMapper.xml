@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smhrd.echo.mapper.MyPageMapper">
+	<select id="getMyPage" parameterType="String" resultType="com.smhrd.echo.model.MyPageInfo">
+		select user_id, user_nick, user_birthdate, user_profile_img, user_gender,
+		(select count(*) from board_info where user_id = #{user_id}) as user_board_cnt,
+		(select count(*) from course_info where user_id = #{user_id}) as user_course_cnt
+		from user_info 
+		where user_id = #{user_id}
+	</select>
+</mapper>

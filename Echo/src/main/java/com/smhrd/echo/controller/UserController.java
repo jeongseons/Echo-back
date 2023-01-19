@@ -37,7 +37,7 @@ public class UserController {
 		List<UserInfo> user = userService.loginUser(user_id);
 		System.out.println(user.toString());
     	return user;
-    	}
+    }
 	
 }
 
