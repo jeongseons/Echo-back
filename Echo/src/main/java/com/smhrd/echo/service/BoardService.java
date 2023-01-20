@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.smhrd.echo.mapper.BoardMapper;
 import com.smhrd.echo.model.BoardInfo;
@@ -15,8 +16,8 @@ public class BoardService {
 	@Autowired
 	BoardMapper boardMapper;
 	
-	public List<BoardListInfo> viewBoardList() {
-		return boardMapper.viewBoardList();
+	public List<BoardListInfo> viewBoardList(String user_id) {
+		return boardMapper.viewBoardList(user_id);
 	}
 
 	public void addBoard(BoardInfo board) {

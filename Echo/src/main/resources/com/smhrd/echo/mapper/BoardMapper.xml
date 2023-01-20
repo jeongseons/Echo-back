@@ -7,6 +7,10 @@
 		(select user_nick from user_info where user_id = bi.user_id) as user_nick,
 		(select count(*) from recommend_info where board_seq = bi.board_seq ) as board_reco_cnt 
 		from board_info bi
+		<if test="user_id != null">
+    	where user_id = #{user_id}
+    	</if>
+    	
 	</select>
 	
 	<insert id="addBoard">
