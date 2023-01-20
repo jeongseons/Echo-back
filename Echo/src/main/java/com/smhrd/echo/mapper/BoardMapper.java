@@ -1,0 +1,22 @@
+package com.smhrd.echo.mapper;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.smhrd.echo.model.BoardInfo;
+import com.smhrd.echo.model.BoardListInfo;
+
+@Mapper
+public interface BoardMapper {
+
+	public List<BoardListInfo> viewBoardList(String user_id);
+
+	public void addBoard(BoardInfo board);
+
+	public void deleteBoard(int board_seq);
+	
+	public void modifyBoard(BoardInfo board);
+	
+}
