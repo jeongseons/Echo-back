@@ -94,7 +94,7 @@ public class GroupController {
 		return group;
 	}
 	
-	@PostMapping("/api/groupsingup/{num}")
+	@PostMapping("/api/groupsignup/{num}")
 	public int groupSignUp(@PathVariable("num") int num,@RequestParam String id) {// 그룹가입 신청
 		System.out.println(id);
 		System.out.println(num);
