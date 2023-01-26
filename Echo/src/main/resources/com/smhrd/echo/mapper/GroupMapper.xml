@@ -25,6 +25,23 @@
 		joining_group b
 		where a.user_id = b.user_id and b.group_seq = #{seq}
 	</select>
+	
+	<select id="joinGroupCon" resultType="com.smhrd.echo.model.Group">
+		select DISTINCT a.group_seq as group_seq, a.group_profile_img as group_profile_img, a.group_name as group_name, (select count(*) from
+		joining_group where group_seq = a.group_seq) as
+		group_current,
+		a.user_max as user_max
+		from group_info a
+		where a.group_area = #{group_area} and a.group_age = #{group_age} and a.group_level = #{group_level} and a.group_gender = #{group_gender} and a.group_type=#{group_type}
+	</select>
+	
+		<select id="joinGroupNick"
+		resultType="com.smhrd.echo.model.Group">
+   		select a.group_seq as group_seq, a.group_profile_img as group_profile_img ,a.group_name as group_name ,a.user_max as user_max,
+   		(select count(*) from joining_group where group_seq = b.group_seq) as group_current
+		from group_info a, joining_group b
+		where a.group_seq = b.group_seq and b.group_auth = "y" and b.user_id = (select user_id from user_info where user_nick = #{nick}) 
+		</select>
 
 	<insert id="addGroup">
 		<selectKey resultType="int" keyProperty="group_seq"

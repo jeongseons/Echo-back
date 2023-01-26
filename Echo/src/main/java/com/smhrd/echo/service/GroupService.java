@@ -28,6 +28,14 @@ public class GroupService {
 		groupMapper.addGroup(group);	
 	}
 	
+	public List<Group> joinGroupCon(Group group){ // 조건으로 그룹 검색
+		return groupMapper.joinGroupCon(group);
+	}
+	
+	public List<Group> joinGroupNick(String nick){ // 그룹장으로 그룹 검색
+		return groupMapper.joinGroupNick(nick);
+	}
+	
 	public void addGroupOwner(Group group) { // 그룹장 추가
 		groupMapper.addGroupOwner(group);	
 	}
@@ -43,6 +51,7 @@ public class GroupService {
 	public List<Calendar> getCalList(int seq){ // 일정 불러오기
 		return groupMapper.getCalList(seq);
 	}
+	
 	
 	
 	
