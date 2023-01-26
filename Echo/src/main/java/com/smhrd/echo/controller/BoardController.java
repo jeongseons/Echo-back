@@ -15,9 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.google.gson.Gson;
 import com.smhrd.echo.model.BoardInfo;
 import com.smhrd.echo.model.BoardListInfo;
-import com.smhrd.echo.model.UserInfo;
 import com.smhrd.echo.service.BoardService;
-import com.smhrd.echo.service.UserService;
 
 @RestController
 public class BoardController {
@@ -36,8 +34,6 @@ public class BoardController {
 	// 게시글 작성
 	@PostMapping("/api/board")
 	public String addBoard(@RequestBody BoardInfo board) {
-//		String json = gs.toJson(board);
-//    	BoardInfo boards = gs.fromJson(json, BoardInfo.class);
 		System.out.println(board);
     	boardService.addBoard(board);
 		
