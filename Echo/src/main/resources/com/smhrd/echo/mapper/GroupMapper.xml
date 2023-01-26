@@ -42,6 +42,20 @@
 		from group_info a, joining_group b
 		where a.group_seq = b.group_seq and b.group_auth = "y" and b.user_id = (select user_id from user_info where user_nick = #{nick}) 
 		</select>
+		
+		<select id="joinGroupPro" resultType="com.smhrd.echo.model.Group">
+		select group_seq, group_profile_img, group_name, group_owner_id, (select count(*) from joining_group where group_seq = #{num}) as group_current, 
+		user_max, group_type, group_area, group_age, group_level, group_gender, group_detail,
+		(select count(*) from joining_group where group_seq = #{num} and user_id = #{id}) as group_auth
+		from group_info
+		where group_seq = #{num}
+		</select>
+		
+		<insert id="groupSignUp">
+		insert into joining_group values(null,
+		#{id}, #{num},
+		NOW(), "대기중")
+		</insert>
 
 	<insert id="addGroup">
 		<selectKey resultType="int" keyProperty="group_seq"

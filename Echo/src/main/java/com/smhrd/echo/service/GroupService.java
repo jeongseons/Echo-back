@@ -36,6 +36,15 @@ public class GroupService {
 		return groupMapper.joinGroupNick(nick);
 	}
 	
+	public Group joinGroupPro(int num, String id){ // 그룹 정보 조회
+		return groupMapper.joinGroupPro(num, id);
+	}
+	
+	public void groupSignUp(int num, String id) { // 가입 신청
+		groupMapper.groupSignUp(num, id);	
+	}
+
+	
 	public void addGroupOwner(Group group) { // 그룹장 추가
 		groupMapper.addGroupOwner(group);	
 	}

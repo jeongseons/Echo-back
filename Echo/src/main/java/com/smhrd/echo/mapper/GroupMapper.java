@@ -27,7 +27,13 @@ public interface GroupMapper {
 	
 	// 그룹 그룹장으로 검색
 	public List<Group> joinGroupNick(String nick);
-
+	
+	// 그룹 정보조회
+	public Group joinGroupPro(int num, String id);
+	
+	// 그룹 가입신청
+	public void groupSignUp(int num, String id);
+	
 	// 그룹장 생성
 	public void addGroupOwner(Group group);	
 	

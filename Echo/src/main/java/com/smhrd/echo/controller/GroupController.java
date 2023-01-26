@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -78,8 +79,31 @@ public class GroupController {
 		System.out.println("닉네임 :"+GroupList);
 		
 		
-		return GroupList;
+		return GroupList; 
 	}
+	
+	
+	@GetMapping("/api/joingrouppro/{num}/{id}")
+	public Group joinGroupPro(@PathVariable("num") int num, @PathVariable("id") String id) {// 그룹프로필 조회
+		System.out.println("확인용"+num);
+		System.out.println("확인용"+id);
+		
+		Group group = groupService.joinGroupPro(num, id);
+		System.out.println("확인용"+group);
+
+		return group;
+	}
+	
+	@PostMapping("/api/groupsingup/{num}")
+	public int groupSignUp(@PathVariable("num") int num,@RequestParam String id) {// 그룹가입 신청
+		System.out.println(id);
+		System.out.println(num);
+		
+		groupService.groupSignUp(num, id);
+
+		return 1;
+	}
+
 
 	@PostMapping("/api/addcal")
 	public int addCal(@RequestBody Calendar calendar) {// 일정 생성
