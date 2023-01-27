@@ -60,10 +60,18 @@
 	</insert>
 
 	<select id="getCalList"
-		resultType="com.smhrd.echo.model.Calendar">
-		select cal_dt, cal_content, group_seq
+		resultType="com.smhrd.echo.model.CalendarInfo">
+		select *
 		from calendar_info
 		where group_seq = #{seq}
 	</select>
+	
+	<delete id="deleteCal">
+		delete from calendar_info where cal_seq = #{cal_seq}
+	</delete>
+	
+	<update id="modifyCal">
+		update calendar_info set cal_dt = #{cal_dt}, cal_content = #{cal_content} where cal_seq = #{cal_seq}
+	</update>
 
 </mapper>

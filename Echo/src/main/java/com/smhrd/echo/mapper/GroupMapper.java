@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.smhrd.echo.model.Calendar;
+import com.smhrd.echo.model.CalendarInfo;
 import com.smhrd.echo.model.Group;
 import com.smhrd.echo.model.Joining_Group;
 
@@ -29,5 +30,12 @@ public interface GroupMapper {
 	public void addCal(Calendar cal);
 	
 	// 일정 불러오기
-	public List<Calendar> getCalList(int seq);
+	public List<CalendarInfo> getCalList(int seq);
+	
+	// 일정 삭제
+	public void deleteCal(int cal_seq);
+	
+	// 일정 수정
+	public void modifyCal(CalendarInfo cal);
+	
 }
