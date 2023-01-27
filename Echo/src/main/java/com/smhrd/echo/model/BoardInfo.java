@@ -15,7 +15,7 @@ public class BoardInfo {
 
 	    private String board_file;
 
-	    private Date board_dt;
+	    private String board_dt;
 
 	    private String user_id;
 
