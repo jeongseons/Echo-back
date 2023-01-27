@@ -57,7 +57,7 @@
 		resultType="com.smhrd.echo.model.Group">
 		select group_seq, group_profile_img, group_name,
 		group_owner_id, (select count(*) from joining_group where group_seq =
-		#{num}) as group_current
+		#{num}) as group_current,
 		user_max, group_type, group_area, group_age, group_level, group_gender,
 		group_detail,
 		(select count(*) from joining_group where group_seq =
