@@ -42,4 +42,12 @@ public interface GroupMapper {
 	
 	// 일정 불러오기
 	public List<Calendar> getCalList(int seq);
+	
+	// 가입승인
+	public void groupAgree(int num, String nick);
+	
+	// 가입거부, 탈퇴
+	public void groupDegree(int num, String nick);
+	
+	public List<Joining_Group> getSignUpList(int num);
 }

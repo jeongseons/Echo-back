@@ -23,39 +23,55 @@
 		b.group_auth as group_auth
 		from user_info a,
 		joining_group b
-		where a.user_id = b.user_id and b.group_seq = #{seq}
+		where a.user_id = b.user_id and b.group_seq = #{seq} and b.group_auth != "대기중"
 	</select>
-	
-	<select id="joinGroupCon" resultType="com.smhrd.echo.model.Group">
-		select DISTINCT a.group_seq as group_seq, a.group_profile_img as group_profile_img, a.group_name as group_name, (select count(*) from
+
+	<select id="joinGroupCon"
+		resultType="com.smhrd.echo.model.Group">
+		select DISTINCT a.group_seq as group_seq,
+		a.group_profile_img as group_profile_img, a.group_name as group_name,
+		(select count(*) from
 		joining_group where group_seq = a.group_seq) as
 		group_current,
 		a.user_max as user_max
 		from group_info a
-		where a.group_area = #{group_area} and a.group_age = #{group_age} and a.group_level = #{group_level} and a.group_gender = #{group_gender} and a.group_type=#{group_type}
+		where
+		a.group_area = #{group_area} and a.group_age = #{group_age} and
+		a.group_level = #{group_level} and a.group_gender = #{group_gender}
+		and a.group_type=#{group_type}
 	</select>
-	
-		<select id="joinGroupNick"
+
+	<select id="joinGroupNick"
 		resultType="com.smhrd.echo.model.Group">
-   		select a.group_seq as group_seq, a.group_profile_img as group_profile_img ,a.group_name as group_name ,a.user_max as user_max,
-   		(select count(*) from joining_group where group_seq = b.group_seq) as group_current
+		select a.group_seq as group_seq, a.group_profile_img as group_profile_img
+		,a.group_name as group_name ,a.user_max as user_max,
+		(select count(*) from joining_group where group_seq = b.group_seq) as
+		group_current
 		from group_info a, joining_group b
-		where a.group_seq = b.group_seq and b.group_auth = "y" and b.user_id = (select user_id from user_info where user_nick = #{nick}) 
-		</select>
-		
-		<select id="joinGroupPro" resultType="com.smhrd.echo.model.Group">
-		select group_seq, group_profile_img, group_name, group_owner_id, (select count(*) from joining_group where group_seq = #{num}) as group_current, 
-		user_max, group_type, group_area, group_age, group_level, group_gender, group_detail,
-		(select count(*) from joining_group where group_seq = #{num} and user_id = #{id}) as group_auth
+		where a.group_seq =
+		b.group_seq and b.group_auth = "y" and b.user_id = (select user_id
+		from user_info where user_nick = #{nick})
+	</select>
+
+	<select id="joinGroupPro"
+		resultType="com.smhrd.echo.model.Group">
+		select group_seq, group_profile_img, group_name,
+		group_owner_id, (select count(*) from joining_group where group_seq =
+		#{num}) as group_current, group_dt
+		user_max, group_type, group_area, group_age, group_level, group_gender,
+		group_detail,
+		(select count(*) from joining_group where group_seq =
+		#{num} and user_id = #{id}) as group_auth
 		from group_info
-		where group_seq = #{num}
-		</select>
-		
-		<insert id="groupSignUp">
+		where
+		group_seq = #{num}
+	</select>
+
+	<insert id="groupSignUp">
 		insert into joining_group values(null,
 		#{id}, #{num},
 		NOW(), "대기중")
-		</insert>
+	</insert>
 
 	<insert id="addGroup">
 		<selectKey resultType="int" keyProperty="group_seq"
@@ -95,6 +111,25 @@
 		select cal_dt, cal_content, group_seq
 		from calendar_info
 		where group_seq = #{seq}
+	</select>
+
+	<update id="groupAgree">
+		update joining_group set group_auth = "n"
+		where user_id = (select user_id from user_info where user_nick = #{nick})
+		and group_seq = #{num}
+	</update>
+
+	<delete id="groupDegree">
+		delete from joining_group
+		where user_id = (select user_id from user_info where user_nick = #{nick})
+		and group_seq = #{num} and group_auth = "대기중"
+	</delete>
+	
+		<select id="getSignUpList"
+		resultType="com.smhrd.echo.model.Joining_Group">
+		select a.user_nick as user_nick, a.user_profile_img as user_profile_img, b.group_auth as group_auth
+		from user_info a, joining_group b
+		where a.user_id = b.user_id and b.group_seq = #{num} and b.group_auth = "대기중"
 	</select>
 
 </mapper>

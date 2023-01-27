@@ -61,8 +61,17 @@ public class GroupService {
 		return groupMapper.getCalList(seq);
 	}
 	
+	public void groupAgree(int num, String nick) {// 가입 승인
+		groupMapper.groupAgree(num, nick);
+	}
 	
+	public void groupDegree(int num, String nick) {// 가입 거부
+		groupMapper.groupAgree(num, nick);
+	}
 	
+	public List<Joining_Group> getSignUpList(int num){ // 가입 대기중 인원 불러오기
+		return groupMapper.getSignUpList(num);
+	}
 	
 	
 }

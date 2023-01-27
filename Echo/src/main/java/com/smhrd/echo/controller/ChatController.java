@@ -16,6 +16,7 @@ public class ChatController {
     @SendTo("/topic/{seq}")
     public ChatMessage sendMessage(@Payload ChatMessage chatMessage) {
     	System.out.println("확인1:");
+    	System.out.println(chatMessage.getContent());
         return chatMessage;
     }
 

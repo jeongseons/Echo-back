@@ -122,5 +122,29 @@ public class GroupController {
 
 		return CalList;
 	}
+	
+	@GetMapping("/api/getsignuplist/{num}")
+	public List<Joining_Group> getSignUpList(@PathVariable int num) { // 그룹의 가입대기 인원 불러오기
 
+		List<Joining_Group> PersonList = groupService.getSignUpList(num);
+		System.out.printf("확인용 : %s%n", PersonList);
+
+		return PersonList;
+	}
+	
+	@PostMapping("/api/groupagree/{num}")
+	public String groupAgree(@PathVariable int num, @RequestParam String user_nick) {// 그룹가입 허가
+		System.out.printf("닉네임 확인용 : %s%n", user_nick);
+		groupService.groupAgree(num, user_nick);
+
+		return "가입완료";
+	}
+	
+	@PostMapping("/api/groupdegree/{num}")
+	public String groupDegree(@PathVariable int num, @RequestParam String user_nick) {// 가입거절, 탈퇴
+		System.out.printf("닉네임 확인용 : %s%n", user_nick);
+		groupService.groupDegree(num, user_nick);
+
+		return "거절 및 탈퇴완료";
+	}
 }
