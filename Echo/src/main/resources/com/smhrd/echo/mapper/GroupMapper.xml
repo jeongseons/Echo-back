@@ -8,7 +8,7 @@
 		group_profile_img,
 		a.group_name as group_name,
 		(select count(*) from
-		joining_group where group_seq = a.group_seq) as
+		joining_group where group_seq = a.group_seq and group_auth != "대기중") as
 		group_current,
 		a.user_max as user_max, b.group_auth as group_auth
 		from group_info a,
@@ -31,7 +31,7 @@
 		select DISTINCT a.group_seq as group_seq,
 		a.group_profile_img as group_profile_img, a.group_name as group_name,
 		(select count(*) from
-		joining_group where group_seq = a.group_seq) as
+		joining_group where group_seq = a.group_seq and group_auth != "대기중") as
 		group_current,
 		a.user_max as user_max
 		from group_info a
@@ -45,7 +45,7 @@
 		resultType="com.smhrd.echo.model.Group">
 		select a.group_seq as group_seq, a.group_profile_img as group_profile_img
 		,a.group_name as group_name ,a.user_max as user_max,
-		(select count(*) from joining_group where group_seq = b.group_seq) as
+		(select count(*) from joining_group where group_seq = b.group_seq and group_auth != "대기중") as
 		group_current
 		from group_info a, joining_group b
 		where a.group_seq =
@@ -57,7 +57,7 @@
 		resultType="com.smhrd.echo.model.Group">
 		select group_seq, group_profile_img, group_name,
 		group_owner_id, (select count(*) from joining_group where group_seq =
-		#{num}) as group_current,
+		#{num} and group_auth != "대기중") as group_current,
 		user_max, group_type, group_area, group_age, group_level, group_gender,
 		group_detail,
 		(select count(*) from joining_group where group_seq =
