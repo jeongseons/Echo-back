@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.smhrd.echo.mapper.GroupMapper;
 import com.smhrd.echo.model.Calendar;
+import com.smhrd.echo.model.CalendarInfo;
 import com.smhrd.echo.model.Group;
 import com.smhrd.echo.model.Joining_Group;
 
@@ -57,20 +58,28 @@ public class GroupService {
 		groupMapper.addCal(cal);
 	}
 	
-	public List<Calendar> getCalList(int seq){ // 일정 불러오기
+	public List<CalendarInfo> getCalList(int seq){ // 일정 불러오기
 		return groupMapper.getCalList(seq);
 	}
 	
 	public void groupAgree(int num, String nick) {// 가입 승인
 		groupMapper.groupAgree(num, nick);
+}
+
+	public void deleteCal(int cal_seq) { // 일정 삭제
+		groupMapper.deleteCal(cal_seq);
 	}
-	
+
 	public void groupDegree(int num, String nick) {// 가입 거부
 		groupMapper.groupAgree(num, nick);
 	}
 	
 	public List<Joining_Group> getSignUpList(int num){ // 가입 대기중 인원 불러오기
 		return groupMapper.getSignUpList(num);
+	}
+	
+	public void modifyCal(CalendarInfo cal) { // 일정 수정
+		groupMapper.modifyCal(cal);
 	}
 	
 	

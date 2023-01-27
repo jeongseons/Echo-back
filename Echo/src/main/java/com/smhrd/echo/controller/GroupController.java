@@ -4,15 +4,18 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.smhrd.echo.service.GroupService;
 import com.smhrd.echo.model.Calendar;
+import com.smhrd.echo.model.CalendarInfo;
 import com.smhrd.echo.model.Group;
 import com.smhrd.echo.model.Joining_Group;
 import com.smhrd.echo.model.UserInfo;
@@ -111,16 +114,32 @@ public class GroupController {
 
 		groupService.addCal(calendar);
 
+
 		return 1;
 	}
 
-	@GetMapping("/api/callist")
-	public List<Calendar> getCalList(@RequestParam int group_seq) { // 그룹의 일정 불러오기
+	
+    @GetMapping("/api/callist")
+    public List<CalendarInfo> getCalList(@RequestParam int group_seq) { //그룹의 일정 불러오기
+        
+    	List<CalendarInfo> CalList= groupService.getCalList(group_seq);
+    	System.out.printf("확인용 : %s%n",CalList);
+    	
+    	return CalList;
+    }
 
-		List<Calendar> CalList = groupService.getCalList(group_seq);
-		System.out.printf("확인용 : %s%n", CalList);
-
-		return CalList;
+	// 일정 삭제
+	@DeleteMapping("/api/cal/{cal_seq}")
+	public void deleteCal(@PathVariable("cal_seq") int cal_seq) {
+		System.out.println(cal_seq);
+		groupService.deleteCal(cal_seq);
+	}
+	
+	// 일정 수정
+	@PutMapping("/api/cal")
+	public void modifyCal(@RequestBody CalendarInfo cal) {
+		System.out.println(cal);
+		groupService.modifyCal(cal);
 	}
 	
 	@GetMapping("/api/getsignuplist/{num}")

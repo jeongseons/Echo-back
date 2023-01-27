@@ -57,7 +57,7 @@
 		resultType="com.smhrd.echo.model.Group">
 		select group_seq, group_profile_img, group_name,
 		group_owner_id, (select count(*) from joining_group where group_seq =
-		#{num}) as group_current, group_dt
+		#{num}) as group_current
 		user_max, group_type, group_area, group_age, group_level, group_gender,
 		group_detail,
 		(select count(*) from joining_group where group_seq =
@@ -107,11 +107,19 @@
 	</insert>
 
 	<select id="getCalList"
-		resultType="com.smhrd.echo.model.Calendar">
-		select cal_dt, cal_content, group_seq
+		resultType="com.smhrd.echo.model.CalendarInfo">
+		select *
 		from calendar_info
 		where group_seq = #{seq}
 	</select>
+	
+	<delete id="deleteCal">
+		delete from calendar_info where cal_seq = #{cal_seq}
+	</delete>
+	
+	<update id="modifyCal">
+		update calendar_info set cal_dt = #{cal_dt}, cal_content = #{cal_content} where cal_seq = #{cal_seq}
+	</update>
 
 	<update id="groupAgree">
 		update joining_group set group_auth = "n"
