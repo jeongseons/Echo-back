@@ -69,9 +69,25 @@ public class GroupController {
 	@PostMapping("/api/joingroupcon")
 	public List<Group> joinGroupCon(@RequestBody Group group) {// 그룹 검색 (조건) 
 		System.out.println("조건" + group);
-
-		List<Group> GroupList = groupService.joinGroupCon(group);
-
+		List<Group> GroupList;
+		
+		if(group.getGroup_age().equals("무관")&&group.getGroup_level().equals("무관")&&group.getGroup_level().equals("무관")&&group.getGroup_area().equals("전국")&&group.getGroup_type().equals("등산/등반")) {
+			GroupList = groupService.joinGroupList();	
+		}
+		else {
+			GroupList = groupService.joinGroupCon(group);
+		}
+		
+		System.out.println("sql 확인" + GroupList);
+		
+		return GroupList;
+	}
+	
+	@GetMapping("/api/joingrouplist")
+	public List<Group> JoinGroupList(){ // 그룹 전체 불러오기 (생성순)
+		
+		List<Group> GroupList = groupService.joinGroupList();		
+		
 		return GroupList;
 	}
 
@@ -166,4 +182,6 @@ public class GroupController {
 
 		return "거절 및 탈퇴완료";
 	}
+
+
 }

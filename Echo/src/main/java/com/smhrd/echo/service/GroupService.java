@@ -28,6 +28,9 @@ public class GroupService {
 	public void addGroup(Group group) { // 모임 생성
 		groupMapper.addGroup(group);	
 	}
+	public List<Group> joinGroupList(){
+		return groupMapper.joinGroupList();
+	}
 	
 	public List<Group> joinGroupCon(Group group){ // 조건으로 그룹 검색
 		return groupMapper.joinGroupCon(group);
