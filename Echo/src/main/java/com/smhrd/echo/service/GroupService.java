@@ -74,7 +74,7 @@ public class GroupService {
 	}
 
 	public void groupDegree(int num, String nick) {// 가입 거부
-		groupMapper.groupAgree(num, nick);
+		groupMapper.groupDegree(num, nick);
 	}
 	
 	public List<Joining_Group> getSignUpList(int num){ // 가입 대기중 인원 불러오기
