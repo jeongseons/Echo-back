@@ -59,4 +59,10 @@ public interface GroupMapper {
 	// 일정 수정
 	public void modifyCal(CalendarInfo cal);
 	
+	// 그룹 삭제
+	public void deleteGroup(int group_seq);
+	
+	// 그룹 정보 수정 
+	public void modifyGroup(Group group);
+	
 }

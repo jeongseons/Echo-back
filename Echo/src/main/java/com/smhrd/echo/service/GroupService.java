@@ -71,7 +71,7 @@ public class GroupService {
 	}
 
 	public void groupDegree(int num, String nick) {// 가입 거부
-		groupMapper.groupAgree(num, nick);
+		groupMapper.groupDegree(num, nick);
 	}
 	
 	public List<Joining_Group> getSignUpList(int num){ // 가입 대기중 인원 불러오기
@@ -80,6 +80,14 @@ public class GroupService {
 	
 	public void modifyCal(CalendarInfo cal) { // 일정 수정
 		groupMapper.modifyCal(cal);
+	}
+	
+	public void deleteGroup(int group_seq) { // 그룹 삭제
+		groupMapper.deleteGroup(group_seq);
+	}
+	
+	public void modifyGroup(Group group) { // 그룹 정보 수정
+		groupMapper.modifyGroup(group);
 	}
 	
 	

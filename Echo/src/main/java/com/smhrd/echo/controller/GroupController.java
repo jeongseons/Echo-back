@@ -166,4 +166,14 @@ public class GroupController {
 
 		return "거절 및 탈퇴완료";
 	}
+	
+	@DeleteMapping("/api/group/{group_seq}")
+	public void deleteGroup(@PathVariable int group_seq) { // 그룹 삭제
+		groupService.deleteGroup(group_seq);
+	}
+	
+	@PutMapping("/api/group")
+	public void modifyGroup(@RequestBody Group group) { // 그룹 정보 수정
+		groupService.modifyGroup(group);
+	}
 }

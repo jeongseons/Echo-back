@@ -139,5 +139,17 @@
 		from user_info a, joining_group b
 		where a.user_id = b.user_id and b.group_seq = #{num} and b.group_auth = "대기중"
 	</select>
+	
+	<delete id="deleteGroup">
+		delete from group_info where group_seq = #{group_seq}
+	</delete>
+	
+	<update id="modifyGroup">
+		update group_info set group_name = #{group_name}, group_area = #{group_area},
+		user_max = #{user_max}, group_age = #{group_age}, group_level = #{group_level},
+		group_gender = #{group_gender}, group_type = #{group_type}, 
+		group_profile_img = #{group_profile_img}, group_detail = #{group_detail}
+		where group_seq = {group_seq}
+	</update>
 
 </mapper>
