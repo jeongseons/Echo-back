@@ -25,6 +25,9 @@ public interface GroupMapper {
 	
 	// 그룹 조건검색
 	public List<Group> joinGroupCon(Group group);
+
+	// 그룹 최신순 리스트
+	public List<Group> joinGroupList();
 	
 	// 그룹 그룹장으로 검색
 	public List<Group> joinGroupNick(String nick);
