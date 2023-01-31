@@ -170,6 +170,32 @@
 		</otherwise>
 		</choose>
 		</when>
+		<when test='group_gender.equals("무관")'><!-- 필터 3개 -->
+		<choose>
+		<when test='group_type.equals("등산/등반")'>
+		a.group_level = #{group_level}
+		</when>
+		<when test='group_level.equals("무관")'>
+		a.group_type = #{group_type}
+		</when>
+		<otherwise>
+		a.group_level = #{group_level} and a.group_type=#{group_type}
+		</otherwise>
+		</choose>
+		</when>
+		<when test='group_type.equals("등산/등반")'><!-- 필터 3개 -->
+		<choose>
+		<when test='group_level.equals("무관")'>
+		a.group_gender = #{group_gender}
+		</when>
+		<when test='group_gender.equals("무관")'>
+		a.group_level = #{group_level}
+		</when>
+		<otherwise>
+		a.group_gender = #{group_gender} and a.group_level=#{group_level}
+		</otherwise>
+		</choose>
+		</when>
 		<otherwise>
 		a.group_level = #{group_level} and a.group_gender = #{group_gender} and a.group_type=#{group_type}
 		</otherwise>
@@ -188,6 +214,32 @@
 		</when>
 		<otherwise>
 		a.group_gender = #{group_gender} and a.group_type=#{group_type}
+		</otherwise>
+		</choose>
+		</when>
+				<when test='group_gender.equals("무관")'><!-- 필터 3개 -->
+		<choose>
+		<when test='group_type.equals("등산/등반")'>
+		a.group_age = #{group_age}
+		</when>
+		<when test='group_age.equals("무관")'>
+		a.group_type = #{group_type}
+		</when>
+		<otherwise>
+		a.group_age = #{group_age} and a.group_type=#{group_type}
+		</otherwise>
+		</choose>
+		</when>
+				<when test='group_type.equals("등산/등반")'><!-- 필터 3개 -->
+		<choose>
+		<when test='group_age.equals("무관")'>
+		a.group_gender = #{group_gender}
+		</when>
+		<when test='group_gender.equals("무관")'>
+		a.group_age= #{group_age}
+		</when>
+		<otherwise>
+		a.group_gender = #{group_gender} and a.group_age = #{group_age}
 		</otherwise>
 		</choose>
 		</when>
@@ -212,6 +264,32 @@
 		</otherwise>
 		</choose>
 		</when>
+				<when test='group_age.equals("무관")'><!-- 필터 3개 -->
+		<choose>
+		<when test='group_type.equals("등산/등반")'>
+		a.group_level = #{group_level}
+		</when>
+		<when test='group_level.equals("무관")'>
+		a.group_type = #{group_type}
+		</when>
+		<otherwise>
+		a.group_level = #{group_level} and a.group_type=#{group_type}
+		</otherwise>
+		</choose>
+		</when>
+				<when test='group_type.equals("등산/등반")'><!-- 필터 3개 -->
+		<choose>
+		<when test='group_level.equals("무관")'>
+		a.group_age = #{group_age}
+		</when>
+		<when test='group_age.equals("무관")'>
+		a.group_level= #{group_level}
+		</when>
+		<otherwise>
+		a.group_age = #{group_age} and a.group_level=#{group_level}
+		</otherwise>
+		</choose>
+		</when>
 		<otherwise>
 		a.group_level = #{group_level} and a.group_age= #{group_age} and a.group_type=#{group_type}
 		</otherwise>
@@ -230,6 +308,32 @@
 		</when>
 		<otherwise>
 		a.group_gender = #{group_gender} and a.group_age=#{group_age}
+		</otherwise>
+		</choose>
+		</when>
+				<when test='group_age.equals("무관")'><!-- 필터 3개 -->
+		<choose>
+		<when test='group_level.equals("무관")'>
+		a.group_gender = #{group_gender}
+		</when>
+		<when test='group_gender.equals("무관")'>
+		a.group_level = #{group_level}
+		</when>
+		<otherwise>
+		a.group_gender = #{group_gender} and a.group_level=#{group_level}
+		</otherwise>
+		</choose>
+		</when>
+				<when test='group_gender.equals("무관")'><!-- 필터 3개 -->
+		<choose>
+		<when test='group_age.equals("무관")'>
+		a.group_level = #{group_level}
+		</when>
+		<when test='group_level.equals("무관")'>
+		a.group_age = #{group_age}
+		</when>
+		<otherwise>
+		a.group_level = #{group_level} and a.group_age=#{group_age}
 		</otherwise>
 		</choose>
 		</when>
