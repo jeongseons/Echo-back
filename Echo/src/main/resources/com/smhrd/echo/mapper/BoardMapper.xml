@@ -27,4 +27,12 @@
 	board_file = #{board_file}, mnt_name = #{mnt_name} where board_seq = #{board_seq}
 	</update>
 	
+	<delete id="deleteSelectedBoard">
+	delete from board_info where board_seq in(
+			<foreach collection="boardSeqList" item="item" separator=",">
+				#{item}
+			</foreach>
+	)
+	</delete>
+	
 </mapper>
