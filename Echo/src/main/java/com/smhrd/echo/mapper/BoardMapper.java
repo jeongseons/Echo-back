@@ -3,8 +3,6 @@ package com.smhrd.echo.mapper;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.web.bind.annotation.RequestParam;
-
 import com.smhrd.echo.model.BoardInfo;
 import com.smhrd.echo.model.BoardListInfo;
 
@@ -19,4 +17,5 @@ public interface BoardMapper {
 	
 	public void modifyBoard(BoardInfo board);
 	
+	public void deleteSelectedBoard(List<Integer> boardSeqList);
 }

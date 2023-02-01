@@ -27,4 +27,10 @@ public class BoardListInfo {
     // 게시글 추천 수
     private int board_reco_cnt;
     
+    // 게시글 댓글 수
+    private int board_cmt_cnt;
+    
+    // 작성자 프로필 사진
+    private String user_profile_img;
+    
 }

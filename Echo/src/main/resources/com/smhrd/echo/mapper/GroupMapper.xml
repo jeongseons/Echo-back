@@ -8,7 +8,7 @@
 		group_profile_img,
 		a.group_name as group_name,
 		(select count(*) from
-		joining_group where group_seq = a.group_seq) as
+		joining_group where group_seq = a.group_seq and group_auth != "대기중") as
 		group_current,
 		a.user_max as user_max, b.group_auth as group_auth
 		from group_info a,
@@ -23,8 +23,46 @@
 		b.group_auth as group_auth
 		from user_info a,
 		joining_group b
-		where a.user_id = b.user_id and b.group_seq = #{seq}
+		where a.user_id = b.user_id and b.group_seq = #{seq} and b.group_auth != "대기중"
 	</select>
+
+
+	<select id="joinGroupNick"
+		resultType="com.smhrd.echo.model.Group">
+		select a.group_seq as group_seq, a.group_profile_img as group_profile_img
+		,a.group_name as group_name ,a.user_max as user_max,
+		(select count(*) from joining_group where group_seq = b.group_seq and group_auth != "대기중") as
+		group_current
+		from group_info a, joining_group b
+		where a.group_seq =
+		b.group_seq and b.group_auth = "y" and b.user_id = (select user_id
+		from user_info where user_nick = #{nick})
+	</select>
+	
+		<select id="joinGroupList"
+		resultType="com.smhrd.echo.model.Group">
+		select * from group_info order by group_seq desc
+	</select>
+
+	<select id="joinGroupPro"
+		resultType="com.smhrd.echo.model.Group">
+		select group_seq, group_profile_img, group_name,
+		group_owner_id, (select count(*) from joining_group where group_seq =
+		#{num} and group_auth != "대기중") as group_current,
+		user_max, group_type, group_area, group_age, group_level, group_gender,
+		group_detail,
+		(select count(*) from joining_group where group_seq =
+		#{num} and user_id = #{id}) as group_auth
+		from group_info
+		where
+		group_seq = #{num}
+	</select>
+
+	<insert id="groupSignUp">
+		insert into joining_group values(null,
+		#{id}, #{num},
+		NOW(), "대기중")
+	</insert>
 
 	<insert id="addGroup">
 		<selectKey resultType="int" keyProperty="group_seq"
@@ -60,10 +98,667 @@
 	</insert>
 
 	<select id="getCalList"
-		resultType="com.smhrd.echo.model.Calendar">
-		select cal_dt, cal_content, group_seq
+		resultType="com.smhrd.echo.model.CalendarInfo">
+		select *
 		from calendar_info
 		where group_seq = #{seq}
 	</select>
+	
+	<delete id="deleteCal">
+		delete from calendar_info where cal_seq = #{cal_seq}
+	</delete>
+	
+	<update id="modifyCal">
+		update calendar_info set cal_dt = #{cal_dt}, cal_content = #{cal_content} where cal_seq = #{cal_seq}
+	</update>
 
+	<update id="groupAgree">
+		update joining_group set group_auth = "n"
+		where user_id = (select user_id from user_info where user_nick = #{nick})
+		and group_seq = #{num}
+	</update>
+
+	<delete id="groupDegree">
+		delete from joining_group
+		where user_id = (select user_id from user_info where user_nick = #{nick})
+		and group_seq = #{num} and group_auth = "대기중"
+	</delete>
+	
+		<select id="getSignUpList"			
+		resultType="com.smhrd.echo.model.Joining_Group">
+		select a.user_nick as user_nick, a.user_profile_img as user_profile_img, b.group_auth as group_auth
+		from user_info a, joining_group b
+		where a.user_id = b.user_id and b.group_seq = #{num} and b.group_auth = "대기중"
+	</select>
+	
+
+	<delete id="deleteGroup">
+		delete from group_info where group_seq = #{group_seq}
+	</delete>
+	
+	<update id="modifyGroup">
+		update group_info set group_name = #{group_name}, group_area = #{group_area},
+		user_max = #{user_max}, group_age = #{group_age}, group_level = #{group_level},
+		group_gender = #{group_gender}, group_type = #{group_type}, 
+		group_profile_img = #{group_profile_img}, group_detail = #{group_detail}
+		where group_seq = {group_seq}
+	</update>
+
+	
+	
+	<select id="joinGroupCon"
+		resultType="com.smhrd.echo.model.Group">
+		select DISTINCT a.group_seq as group_seq,
+		a.group_profile_img as group_profile_img, a.group_name as group_name,
+		(select count(*) from
+		joining_group where group_seq = a.group_seq and group_auth != "대기중") as
+		group_current,
+		a.user_max as user_max
+		from group_info a
+		where
+		<choose>
+		
+		<when test='!(group_area.equals("전국")) and !(group_age.equals("무관")) and !(group_gender.equals("무관")) and !(group_level.equals("무관")) and !(group_type.equals("등산/등반"))'>
+		a.group_area = #{group_area} and a.group_age = #{group_age} and
+		a.group_level = #{group_level} and a.group_gender = #{group_gender}
+		and a.group_type=#{group_type}
+		</when>
+		
+		<!-- 지역 전국 -->
+		<when test='group_area.equals("전국")'>
+		<choose>
+		
+		<when test='group_age.equals("무관")'><!-- 필터 2개 -->
+		<choose>
+		<when test='group_level.equals("무관")'><!-- 필터 3개 -->
+		<choose>
+		<when test='group_type.equals("등산/등반")'>
+		a.group_gender = #{group_gender}
+		</when>
+		<when test='group_gender.equals("무관")'>
+		a.group_type = #{group_type}
+		</when>
+		<otherwise>
+		a.group_gender = #{group_gender} and a.group_type=#{group_type}
+		</otherwise>
+		</choose>
+		</when>
+		<when test='group_gender.equals("무관")'><!-- 필터 3개 -->
+		<choose>
+		<when test='group_type.equals("등산/등반")'>
+		a.group_level = #{group_level}
+		</when>
+		<when test='group_level.equals("무관")'>
+		a.group_type = #{group_type}
+		</when>
+		<otherwise>
+		a.group_level = #{group_level} and a.group_type=#{group_type}
+		</otherwise>
+		</choose>
+		</when>
+		<when test='group_type.equals("등산/등반")'><!-- 필터 3개 -->
+		<choose>
+		<when test='group_level.equals("무관")'>
+		a.group_gender = #{group_gender}
+		</when>
+		<when test='group_gender.equals("무관")'>
+		a.group_level = #{group_level}
+		</when>
+		<otherwise>
+		a.group_gender = #{group_gender} and a.group_level=#{group_level}
+		</otherwise>
+		</choose>
+		</when>
+		<otherwise>
+		a.group_level = #{group_level} and a.group_gender = #{group_gender} and a.group_type=#{group_type}
+		</otherwise>
+		</choose>
+		</when>
+		
+		<when test='group_level.equals("무관")'><!-- 필터 2개 -->
+		<choose>
+		<when test='group_age.equals("무관")'><!-- 필터 3개 -->
+		<choose>
+		<when test='group_type.equals("등산/등반")'>
+		a.group_gender = #{group_gender}
+		</when>
+		<when test='group_gender.equals("무관")'>
+		a.group_type = #{group_type}
+		</when>
+		<otherwise>
+		a.group_gender = #{group_gender} and a.group_type=#{group_type}
+		</otherwise>
+		</choose>
+		</when>
+				<when test='group_gender.equals("무관")'><!-- 필터 3개 -->
+		<choose>
+		<when test='group_type.equals("등산/등반")'>
+		a.group_age = #{group_age}
+		</when>
+		<when test='group_age.equals("무관")'>
+		a.group_type = #{group_type}
+		</when>
+		<otherwise>
+		a.group_age = #{group_age} and a.group_type=#{group_type}
+		</otherwise>
+		</choose>
+		</when>
+				<when test='group_type.equals("등산/등반")'><!-- 필터 3개 -->
+		<choose>
+		<when test='group_age.equals("무관")'>
+		a.group_gender = #{group_gender}
+		</when>
+		<when test='group_gender.equals("무관")'>
+		a.group_age= #{group_age}
+		</when>
+		<otherwise>
+		a.group_gender = #{group_gender} and a.group_age = #{group_age}
+		</otherwise>
+		</choose>
+		</when>
+		<otherwise>
+		a.group_age = #{group_age} and a.group_gender = #{group_gender} and a.group_type=#{group_type}
+		</otherwise>
+		</choose>
+		</when>
+		
+		<when test='group_gender.equals("무관")'><!-- 필터 2개 -->
+		<choose>
+		<when test='group_level.equals("무관")'><!-- 필터 3개 -->
+		<choose>
+		<when test='group_type.equals("등산/등반")'>
+		a.group_age = #{group_age}
+		</when>
+		<when test='group_age.equals("무관")'>
+		a.group_type = #{group_type}
+		</when>
+		<otherwise>
+		a.group_age = #{group_age} and a.group_type=#{group_type}
+		</otherwise>
+		</choose>
+		</when>
+				<when test='group_age.equals("무관")'><!-- 필터 3개 -->
+		<choose>
+		<when test='group_type.equals("등산/등반")'>
+		a.group_level = #{group_level}
+		</when>
+		<when test='group_level.equals("무관")'>
+		a.group_type = #{group_type}
+		</when>
+		<otherwise>
+		a.group_level = #{group_level} and a.group_type=#{group_type}
+		</otherwise>
+		</choose>
+		</when>
+				<when test='group_type.equals("등산/등반")'><!-- 필터 3개 -->
+		<choose>
+		<when test='group_level.equals("무관")'>
+		a.group_age = #{group_age}
+		</when>
+		<when test='group_age.equals("무관")'>
+		a.group_level= #{group_level}
+		</when>
+		<otherwise>
+		a.group_age = #{group_age} and a.group_level=#{group_level}
+		</otherwise>
+		</choose>
+		</when>
+		<otherwise>
+		a.group_level = #{group_level} and a.group_age= #{group_age} and a.group_type=#{group_type}
+		</otherwise>
+		</choose>
+		</when>
+		
+		<when test='group_type.equals("등산/등반")'><!-- 필터 2개 -->
+		<choose>
+		<when test='group_level.equals("무관")'><!-- 필터 3개 -->
+		<choose>
+		<when test='group_age.equals("무관")'>
+		a.group_gender = #{group_gender}
+		</when>
+		<when test='group_gender.equals("무관")'>
+		a.group_age = #{group_age}
+		</when>
+		<otherwise>
+		a.group_gender = #{group_gender} and a.group_age=#{group_age}
+		</otherwise>
+		</choose>
+		</when>
+				<when test='group_age.equals("무관")'><!-- 필터 3개 -->
+		<choose>
+		<when test='group_level.equals("무관")'>
+		a.group_gender = #{group_gender}
+		</when>
+		<when test='group_gender.equals("무관")'>
+		a.group_level = #{group_level}
+		</when>
+		<otherwise>
+		a.group_gender = #{group_gender} and a.group_level=#{group_level}
+		</otherwise>
+		</choose>
+		</when>
+				<when test='group_gender.equals("무관")'><!-- 필터 3개 -->
+		<choose>
+		<when test='group_age.equals("무관")'>
+		a.group_level = #{group_level}
+		</when>
+		<when test='group_level.equals("무관")'>
+		a.group_age = #{group_age}
+		</when>
+		<otherwise>
+		a.group_level = #{group_level} and a.group_age=#{group_age}
+		</otherwise>
+		</choose>
+		</when>
+		<otherwise>
+		a.group_level = #{group_level} and a.group_gender = #{group_gender} and a.group_age=#{group_age}
+		</otherwise>
+		</choose>
+		</when>
+		
+		<otherwise>
+		a.group_age = #{group_age} and
+		a.group_level = #{group_level} and a.group_gender = #{group_gender}
+		and a.group_type=#{group_type}
+		</otherwise>
+		
+		</choose>
+		</when>
+		
+		<!-- 연령 무관-->
+		<when test='group_age.equals("무관")'>
+
+		<choose>
+		
+		<when test='group_area.equals("전국")'><!-- 필터 2개 -->
+		<choose>
+		<when test='group_level.equals("무관")'><!-- 필터 3개 -->
+		<choose>
+		<when test='group_type.equals("등산/등반")'>
+		a.group_gender = #{group_gender}
+		</when>
+		<when test='group_gender.equals("무관")'>
+		a.group_type = #{group_type}
+		</when>
+		<otherwise>
+		a.group_gender = #{group_gender} and a.group_type=#{group_type}
+		</otherwise>
+		</choose>
+		</when>
+		<otherwise>
+		a.group_level = #{group_level} and a.group_gender = #{group_gender} and a.group_type=#{group_type}
+		</otherwise>
+		</choose>
+		</when>
+		
+		<when test='group_level.equals("무관")'><!-- 필터 2개 -->
+		<choose>
+		<when test='group_area.equals("전국")'><!-- 필터 3개 -->
+		<choose>
+		<when test='group_type.equals("등산/등반")'>
+		a.group_gender = #{group_gender}
+		</when>
+		<when test='group_gender.equals("무관")'>
+		a.group_type = #{group_type}
+		</when>
+		<otherwise>
+		a.group_gender = #{group_gender} and a.group_type=#{group_type}
+		</otherwise>
+		</choose>
+		</when>
+		<otherwise>
+		a.group_area = #{group_area} and a.group_gender = #{group_gender} and a.group_type=#{group_type}
+		</otherwise>
+		</choose>
+		</when>
+		
+		<when test='group_gender.equals("무관")'><!-- 필터 2개 -->
+		<choose>
+		<when test='group_level.equals("무관")'><!-- 필터 3개 -->
+		<choose>
+		<when test='group_type.equals("등산/등반")'>
+		a.group_area = #{group_area}
+		</when>
+		<when test='group_area.equals("전국")'>
+		a.group_type = #{group_type}
+		</when>
+		<otherwise>
+		a.group_area = #{group_area} and a.group_type=#{group_type}
+		</otherwise>
+		</choose>
+		</when>
+		<otherwise>
+		a.group_level = #{group_level} and a.group_area= #{group_area} and a.group_type=#{group_type}
+		</otherwise>
+		</choose>
+		</when>
+		
+		<when test='group_type.equals("등산/등반")'><!-- 필터 2개 -->
+		<choose>
+		<when test='group_level.equals("무관")'><!-- 필터 3개 -->
+		<choose>
+		<when test='group_area.equals("전국")'>
+		a.group_gender = #{group_gender}
+		</when>
+		<when test='group_gender.equals("무관")'>
+		a.group_area = #{group_area}
+		</when>
+		<otherwise>
+		a.group_gender = #{group_gender} and a.group_age=#{group_age}
+		</otherwise>
+		</choose>
+		</when>
+		<otherwise>
+		a.group_level = #{group_level} and a.group_gender = #{group_gender} and a.group_area=#{group_area}
+		</otherwise>
+		</choose>
+		</when>
+		
+		<otherwise>
+		a.group_area = #{group_area} and a.group_level = #{group_level} 
+		and a.group_gender = #{group_gender} and a.group_type=#{group_type}
+		</otherwise>
+		
+		</choose>
+		</when>
+		
+		<!-- 난이도 무관 -->
+		<when test='group_level.equals("무관")'>
+
+		<choose>
+		
+		<when test='group_area.equals("전국")'><!-- 필터 2개 -->
+		<choose>
+		<when test='group_age.equals("무관")'><!-- 필터 3개 -->
+		<choose>
+		<when test='group_type.equals("등산/등반")'>
+		a.group_gender = #{group_gender}
+		</when>
+		<when test='group_gender.equals("무관")'>
+		a.group_type = #{group_type}
+		</when>
+		<otherwise>
+		a.group_gender = #{group_gender} and a.group_type=#{group_type}
+		</otherwise>
+		</choose>
+		</when>
+		<otherwise>
+		a.group_age = #{group_age} and a.group_gender = #{group_gender} and a.group_type=#{group_type}
+		</otherwise>
+		</choose>
+		</when>
+		
+		<when test='group_age.equals("무관")'><!-- 필터 2개 -->
+		<choose>
+		<when test='group_area.equals("전국")'><!-- 필터 3개 -->
+		<choose>
+		<when test='group_type.equals("등산/등반")'>
+		a.group_gender = #{group_gender}
+		</when>
+		<when test='group_gender.equals("무관")'>
+		a.group_type = #{group_type}
+		</when>
+		<otherwise>
+		a.group_gender = #{group_gender} and a.group_type=#{group_type}
+		</otherwise>
+		</choose>
+		</when>
+		<otherwise>
+		a.group_area = #{group_area} and a.group_gender = #{group_gender} and a.group_type=#{group_type}
+		</otherwise>
+		</choose>
+		</when>
+		
+		<when test='group_gender.equals("무관")'><!-- 필터 2개 -->
+		<choose>
+		<when test='group_age.equals("무관")'><!-- 필터 3개 -->
+		<choose>
+		<when test='group_type.equals("등산/등반")'>
+		a.group_area = #{group_area}
+		</when>
+		<when test='group_area.equals("전국")'>
+		a.group_type = #{group_type}
+		</when>
+		<otherwise>
+		a.group_area = #{group_area} and a.group_type=#{group_type}
+		</otherwise>
+		</choose>
+		</when>
+		<otherwise>
+		a.group_age = #{group_age} and a.group_area= #{group_area} and a.group_type=#{group_type}
+		</otherwise>
+		</choose>
+		</when>
+		
+		<when test='group_type.equals("등산/등반")'><!-- 필터 2개 -->
+		<choose>
+		<when test='group_age.equals("무관")'><!-- 필터 3개 -->
+		<choose>
+		<when test='group_area.equals("전국")'>
+		a.group_gender = #{group_gender}
+		</when>
+		<when test='group_gender.equals("무관")'>
+		a.group_area = #{group_area}
+		</when>
+		<otherwise>
+		a.group_gender = #{group_gender} and a.group_age=#{group_age}
+		</otherwise>
+		</choose>
+		</when>
+		<otherwise>
+		a.group_age = #{group_age} and a.group_gender = #{group_gender} and a.group_area=#{group_area}
+		</otherwise>
+		</choose>
+		</when>
+		
+		<otherwise>
+		a.group_area = #{group_area} and a.group_age = #{group_age} 
+		and a.group_gender = #{group_gender} and a.group_type=#{group_type}
+		</otherwise>
+		
+		</choose>
+		</when>
+		
+		<!-- 성별 무관 -->
+		<when test='group_gender.equals("무관")'>
+
+		<choose>
+		
+		<when test='group_area.equals("전국")'><!-- 필터 2개 -->
+		<choose>
+		<when test='group_age.equals("무관")'><!-- 필터 3개 -->
+		<choose>
+		<when test='group_type.equals("등산/등반")'>
+		a.group_level = #{group_level}
+		</when>
+		<when test='group_level.equals("무관")'>
+		a.group_type = #{group_type}
+		</when>
+		<otherwise>
+		a.group_level = #{group_level} and a.group_type=#{group_type}
+		</otherwise>
+		</choose>
+		</when>
+		<otherwise>
+		a.group_age = #{group_age} and a.group_level = #{group_level} and a.group_type=#{group_type}
+		</otherwise>
+		</choose>
+		</when>
+		
+		<when test='group_age.equals("무관")'><!-- 필터 2개 -->
+		<choose>
+		<when test='group_area.equals("전국")'><!-- 필터 3개 -->
+		<choose>
+		<when test='group_type.equals("등산/등반")'>
+		a.group_level = #{group_level}
+		</when>
+		<when test='group_level.equals("무관")'>
+		a.group_type = #{group_type}
+		</when>
+		<otherwise>
+		a.group_level = #{group_level} and a.group_type=#{group_type}
+		</otherwise>
+		</choose>
+		</when>
+		<otherwise>
+		a.group_area = #{group_area} and a.group_level = #{group_level} and a.group_type=#{group_type}
+		</otherwise>
+		</choose>
+		</when>
+		
+		<when test='group_level.equals("무관")'><!-- 필터 2개 -->
+		<choose>
+		<when test='group_age.equals("무관")'><!-- 필터 3개 -->
+		<choose>
+		<when test='group_type.equals("등산/등반")'>
+		a.group_area = #{group_area}
+		</when>
+		<when test='group_area.equals("전국")'>
+		a.group_type = #{group_type}
+		</when>
+		<otherwise>
+		a.group_area = #{group_area} and a.group_type=#{group_type}
+		</otherwise>
+		</choose>
+		</when>
+		<otherwise>
+		a.group_age = #{group_age} and a.group_area= #{group_area} and a.group_type=#{group_type}
+		</otherwise>
+		</choose>
+		</when>
+		
+		<when test='group_type.equals("등산/등반")'><!-- 필터 2개 -->
+		<choose>
+		<when test='group_age.equals("무관")'><!-- 필터 3개 -->
+		<choose>
+		<when test='group_area.equals("전국")'>
+		a.group_level = #{group_level}
+		</when>
+		<when test='group_level.equals("무관")'>
+		a.group_area = #{group_area}
+		</when>
+		<otherwise>
+		a.group_level = #{group_level} and a.group_age=#{group_age}
+		</otherwise>
+		</choose>
+		</when>
+		<otherwise>
+		a.group_age = #{group_age} and a.group_level = #{group_level} and a.group_area=#{group_area}
+		</otherwise>
+		</choose>
+		</when>
+		
+		<otherwise>
+		a.group_area = #{group_area} and a.group_age = #{group_age} 
+		and a.group_level = #{group_level} and a.group_type=#{group_type}
+		</otherwise>
+		
+		</choose>
+		</when>
+		
+		<!-- 유형 무관 -->
+		<when test='group_type.equals("등산/등반")'>
+
+		<choose>
+		
+		<when test='group_area.equals("전국")'><!-- 필터 2개 -->
+		<choose>
+		<when test='group_age.equals("무관")'><!-- 필터 3개 -->
+		<choose>
+		<when test='group_gender.equals("무관")'>
+		a.group_level = #{group_level}
+		</when>
+		<when test='group_level.equals("무관")'>
+		a.group_gender = #{group_gender}
+		</when>
+		<otherwise>
+		a.group_level = #{group_level} and a.group_gender=#{group_gender}
+		</otherwise>
+		</choose>
+		</when>
+		<otherwise>
+		a.group_age = #{group_age} and a.group_level = #{group_level} and a.group_type=#{group_type}
+		</otherwise>
+		</choose>
+		</when>
+		
+		<when test='group_age.equals("무관")'><!-- 필터 2개 -->
+		<choose>
+		<when test='group_area.equals("전국")'><!-- 필터 3개 -->
+		<choose>
+		<when test='group_gender.equals("무관")'>
+		a.group_level = #{group_level}
+		</when>
+		<when test='group_level.equals("무관")'>
+		a.group_gender = #{group_gender}
+		</when>
+		<otherwise>
+		a.group_level = #{group_level} and a.group_gender=#{group_gender}
+		</otherwise>
+		</choose>
+		</when>
+		<otherwise>
+		a.group_area = #{group_area} and a.group_level = #{group_level} and a.group_gender=#{group_gender}
+		</otherwise>
+		</choose>
+		</when>
+		
+		<when test='group_level.equals("무관")'><!-- 필터 2개 -->
+		<choose>
+		<when test='group_age.equals("무관")'><!-- 필터 3개 -->
+		<choose>
+		<when test='group_gender.equals("무관")'>
+		a.group_area = #{group_area}
+		</when>
+		<when test='group_area.equals("전국")'>
+		a.group_gender = #{group_gender}
+		</when>
+		<otherwise>
+		a.group_area = #{group_area} and a.group_gedner = #{group_gender}
+		</otherwise>
+		</choose>
+		</when>
+		<otherwise>
+		a.group_age = #{group_age} and a.group_area= #{group_area} and a.group_gender=#{group_gender}
+		</otherwise>
+		</choose>
+		</when>
+		
+		<when test='group_gender.equals("무관")'><!-- 필터 2개 -->
+		<choose>
+		<when test='group_age.equals("무관")'><!-- 필터 3개 -->
+		<choose>
+		<when test='group_area.equals("전국")'>
+		a.group_level = #{group_level}
+		</when>
+		<when test='group_level.equals("무관")'>
+		a.group_area = #{group_area}
+		</when>
+		<otherwise>
+		a.group_level = #{group_level} and a.group_age=#{group_age}
+		</otherwise>
+		</choose>
+		</when>
+		<otherwise>
+		a.group_age = #{group_age} and a.group_level = #{group_level} and a.group_area=#{group_area}
+		</otherwise>
+		</choose>
+		</when>
+		
+		<otherwise>
+		a.group_area = #{group_area} and a.group_age = #{group_age} 
+		and a.group_gender = #{group_gender} and a.group_level=#{group_level}
+		</otherwise>
+		
+		</choose>
+		</when>
+	
+		</choose>
+	</select>
+
+	<delete id="quitGroup">
+		delete from joining_group
+		where user_id = #{user_id} and group_seq = #{group_seq} 
+	</delete>
+	
 </mapper>

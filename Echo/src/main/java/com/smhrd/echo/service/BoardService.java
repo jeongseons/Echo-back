@@ -4,8 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
-
 import com.smhrd.echo.mapper.BoardMapper;
 import com.smhrd.echo.model.BoardInfo;
 import com.smhrd.echo.model.BoardListInfo;
@@ -32,4 +30,7 @@ public class BoardService {
 		boardMapper.modifyBoard(board);
 	}
 
+	public void deleteSelectedBoard(List<Integer> boardSeqList) {
+		boardMapper.deleteSelectedBoard(boardSeqList);
+	}
 }

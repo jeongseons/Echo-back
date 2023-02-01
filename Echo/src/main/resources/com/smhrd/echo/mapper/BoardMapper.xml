@@ -5,7 +5,9 @@
 	<select id="viewBoardList" resultType="com.smhrd.echo.model.BoardListInfo">
 		select board_seq, board_title, board_content, board_file, board_dt, user_id, mnt_name, 
 		(select user_nick from user_info where user_id = bi.user_id) as user_nick,
-		(select count(*) from recommend_info where board_seq = bi.board_seq ) as board_reco_cnt 
+		(select user_profile_img from user_info where user_id = bi.user_id) as user_profile_img,
+		(select count(*) from recommend_info where board_seq = bi.board_seq ) as board_reco_cnt,
+		(select count(*) from comment_info where board_seq = bi.board_seq ) as board_cmt_cnt 
 		from board_info bi
 		<if test="user_id != null">
     	where user_id = #{user_id}
@@ -26,5 +28,13 @@
 	update board_info set board_title = #{board_title}, board_content = #{board_content},
 	board_file = #{board_file}, mnt_name = #{mnt_name} where board_seq = #{board_seq}
 	</update>
+	
+	<delete id="deleteSelectedBoard">
+	delete from board_info where board_seq in(
+			<foreach collection="boardSeqList" item="item" separator=",">
+				#{item}
+			</foreach>
+	)
+	</delete>
 	
 </mapper>
