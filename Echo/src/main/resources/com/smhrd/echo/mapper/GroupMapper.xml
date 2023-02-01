@@ -756,4 +756,9 @@
 		</choose>
 	</select>
 
+	<delete id="quitGroup">
+		delete from joining_group
+		where user_id = #{user_id} and group_seq = #{group_seq} 
+	</delete>
+	
 </mapper>

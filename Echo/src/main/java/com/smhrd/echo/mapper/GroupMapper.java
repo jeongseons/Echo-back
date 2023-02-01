@@ -68,4 +68,7 @@ public interface GroupMapper {
 	// 그룹 정보 수정 
 	public void modifyGroup(Group group);
 	
+	// 그룹 탈퇴
+	public void quitGroup(int group_seq, String user_id); 
+	
 }
