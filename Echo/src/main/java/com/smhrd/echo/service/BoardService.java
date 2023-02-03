@@ -30,4 +30,7 @@ public class BoardService {
 		boardMapper.modifyBoard(board);
 	}
 
+	public void deleteSelectedBoard(List<Integer> boardSeqList) {
+		boardMapper.deleteSelectedBoard(boardSeqList);
+	}
 }

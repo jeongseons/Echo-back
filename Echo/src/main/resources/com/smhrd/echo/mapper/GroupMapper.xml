@@ -141,7 +141,7 @@
 		user_max = #{user_max}, group_age = #{group_age}, group_level = #{group_level},
 		group_gender = #{group_gender}, group_type = #{group_type}, 
 		group_profile_img = #{group_profile_img}, group_detail = #{group_detail}
-		where group_seq = {group_seq}
+		where group_seq = #{group_seq}
 	</update>
 
 	
@@ -756,4 +756,9 @@
 		</choose>
 	</select>
 
+	<delete id="quitGroup">
+		delete from joining_group
+		where user_id = #{user_id} and group_seq = #{group_seq} 
+	</delete>
+	
 </mapper>

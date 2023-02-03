@@ -19,5 +19,7 @@ public class CmtListInfo {
 	    private String user_id;
 	    
 	    private String user_nick;
+	    
+	    private String user_profile_img;
 	    	    
 }

@@ -4,7 +4,8 @@
 
 	<select id="viewCmtList" resultType="com.smhrd.echo.model.CmtListInfo">
 		select cmt_seq, board_seq, cmt_content, cmt_dt, user_id,
-		(select user_nick from user_info where user_id = ci.user_id) as user_nick
+		(select user_nick from user_info where user_id = ci.user_id) as user_nick,
+		(select user_profile_img from user_info where user_id = ci.user_id) as user_profile_img
 		from comment_info ci
 		where board_seq = #{board_seq}
 	</select>

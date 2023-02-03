@@ -93,5 +93,8 @@ public class GroupService {
 		groupMapper.modifyGroup(group);
 	}
 	
+	public void quitGroup(int group_seq, String user_id) { // 그룹 탈퇴
+		groupMapper.quitGroup(group_seq, user_id);
+	}
 	
 }

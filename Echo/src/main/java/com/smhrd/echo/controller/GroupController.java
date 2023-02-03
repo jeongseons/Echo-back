@@ -193,5 +193,11 @@ public class GroupController {
 	public void modifyGroup(@RequestBody Group group) { // 그룹 정보 수정
 		groupService.modifyGroup(group);
 	}
+	
+	@DeleteMapping("/api/group")
+	public void quitGroup(@RequestParam int group_seq, @RequestParam String user_id) { // 그룹 탈퇴
+		groupService.quitGroup(group_seq, user_id);
+	}
+	
 }
 

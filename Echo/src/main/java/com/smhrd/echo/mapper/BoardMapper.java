@@ -17,4 +17,5 @@ public interface BoardMapper {
 	
 	public void modifyBoard(BoardInfo board);
 	
+	public void deleteSelectedBoard(List<Integer> boardSeqList);
 }

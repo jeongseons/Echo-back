@@ -52,6 +52,13 @@ public class BoardController {
 	public void modifyBoard(@RequestBody BoardInfo board) {
 		System.out.println(board);
 		boardService.modifyBoard(board);
+	}	
+	
+	// 게시글 삭제 - 다수
+	@DeleteMapping("/api/board")
+	public void deleteSelectedBoard(@RequestBody List<Integer> boardSeqList)  {
+		System.out.println(boardSeqList);
+		boardService.deleteSelectedBoard(boardSeqList);
 	}
 	
 }
