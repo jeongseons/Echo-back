@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.smhrd.echo.mapper.CourseMapper">
 
-	<insert id="addCourse">
+	<insert id="addCourse" parameterType="com.smhrd.echo.model.CourseInfo">
 		<selectKey keyProperty="course_seq" resultType="int" order="AFTER">
 			select max(course_seq) from course_info
 		</selectKey>
