@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.smhrd.echo.model.CourseInfo;
+import com.smhrd.echo.model.CourseList;
 import com.smhrd.echo.model.MapInfo;
 import com.smhrd.echo.model.Course;
 import com.smhrd.echo.model.Pair;
@@ -51,7 +52,7 @@ public class CourseController {
 	
 	// 경로 목록 조회
 	@GetMapping("/api/course")
-	public List<CourseInfo> getCourse(@RequestParam("id") String user_id) {
+	public List<CourseList> getCourse(@RequestParam("id") String user_id) {
 		System.out.println(user_id);
 		System.out.println(courseService.getCourse(user_id));
 		return courseService.getCourse(user_id);

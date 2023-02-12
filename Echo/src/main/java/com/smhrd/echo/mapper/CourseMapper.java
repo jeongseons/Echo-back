@@ -8,6 +8,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.smhrd.echo.model.CourseInfo;
+import com.smhrd.echo.model.CourseList;
 import com.smhrd.echo.model.MapInfo;
 import com.smhrd.echo.model.Pair;
 
@@ -19,7 +20,7 @@ public interface CourseMapper {
 	
 	public void addMap(Map<String, Object> paramMap);
 	
-	public List<CourseInfo> getCourse(String user_id);
+	public List<CourseList> getCourse(String user_id);
 	
 	public List<MapInfo> getMap(int course_seq);
 

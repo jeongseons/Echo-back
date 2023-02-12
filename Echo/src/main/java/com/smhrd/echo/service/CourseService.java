@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.smhrd.echo.mapper.CourseMapper;
 import com.smhrd.echo.model.CourseInfo;
+import com.smhrd.echo.model.CourseList;
 import com.smhrd.echo.model.MapInfo;
 import com.smhrd.echo.model.Pair;
 
@@ -26,7 +27,7 @@ public class CourseService {
 		courseMapper.addMap(paramMap);
 	}
 
-	public List<CourseInfo> getCourse(String user_id){
+	public List<CourseList> getCourse(String user_id){
 		return courseMapper.getCourse(user_id);
 	}
 	
