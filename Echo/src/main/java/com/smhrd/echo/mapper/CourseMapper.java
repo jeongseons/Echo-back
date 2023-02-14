@@ -23,5 +23,11 @@ public interface CourseMapper {
 	public List<CourseList> getCourse(String user_id);
 	
 	public List<MapInfo> getMap(int course_seq);
-
+	
+	public void modifyCourse(int course_seq);
+	
+	public void deleteCourse(int course_seq);
+	
+	public void deleteMap(int course_seq);
+	
 }

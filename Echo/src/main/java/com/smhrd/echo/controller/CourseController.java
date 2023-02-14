@@ -7,9 +7,11 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -66,6 +68,18 @@ public class CourseController {
 		return courseService.getMap(course_seq);
 	}
 	
+	// 경로 정보 수정
+	@PutMapping("/api/course/{course_seq}")
+	public void modifyCourse(@PathVariable("course_seq") int course_seq) {
+		courseService.modifyCourse(course_seq);
+	}
+	
+	// 경로 삭제
+	@DeleteMapping("/api/course/{course_seq}")
+	public void deleteCourse(@PathVariable("course_seq") int course_seq) {
+		courseService.deleteMap(course_seq);
+		courseService.deleteCourse(course_seq);
+	}
 	
 }
 

@@ -35,4 +35,16 @@ public class CourseService {
 		return courseMapper.getMap(course_seq);
 	}
 	
+	public void modifyCourse(int course_seq) {
+		courseMapper.modifyCourse(course_seq);
+	}
+	
+	public void deleteCourse(int course_seq) {
+		courseMapper.deleteCourse(course_seq);
+	}
+	
+	public void deleteMap(int course_seq) {
+		courseMapper.deleteMap(course_seq);
+	}
+	
 }

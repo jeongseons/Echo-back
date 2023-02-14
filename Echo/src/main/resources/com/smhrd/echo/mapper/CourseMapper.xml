@@ -29,5 +29,17 @@
 	<select id="getMap" resultType="com.smhrd.echo.model.MapInfo">
 		select * from map_info where course_seq = #{course_seq}
 	</select>
-
+	
+	<update id="modifyCourse">
+		update course_info set course_title = #{course_title}, course_open = #{course_open} where course_seq = #{course_seq}
+	</update>
+	
+	<delete id="deleteCourse">
+		delete from course_info where course_seq = #{course_seq}
+	</delete>
+	
+	<delete id="deleteMap">
+		delete from map_info where course_seq = #{course_seq}
+	</delete>
+	
 </mapper>
