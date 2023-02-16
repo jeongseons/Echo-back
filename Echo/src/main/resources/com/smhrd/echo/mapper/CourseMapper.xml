@@ -42,4 +42,20 @@
 		delete from map_info where course_seq = #{course_seq}
 	</delete>
 	
+	<delete id="deleteSelectedCourse">
+	delete from course_info where course_seq in(
+			<foreach collection="courseSeqList" item="item" separator=",">
+				#{item}
+			</foreach>
+	)
+	</delete>
+	
+	<delete id="deleteSelectedMap">
+	delete from map_info where course_seq in(
+			<foreach collection="courseSeqList" item="item" separator=",">
+				#{item}
+			</foreach>
+	)
+	</delete>
+	
 </mapper>

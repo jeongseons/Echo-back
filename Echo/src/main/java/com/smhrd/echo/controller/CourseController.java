@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.smhrd.echo.model.CourseInfo;
 import com.smhrd.echo.model.CourseList;
 import com.smhrd.echo.model.MapInfo;
+import com.smhrd.echo.model.ModifiedCourse;
 import com.smhrd.echo.model.Course;
 import com.smhrd.echo.model.Pair;
 import com.smhrd.echo.service.CourseService;
@@ -69,9 +70,9 @@ public class CourseController {
 	}
 	
 	// 경로 정보 수정
-	@PutMapping("/api/course/{course_seq}")
-	public void modifyCourse(@PathVariable("course_seq") int course_seq) {
-		courseService.modifyCourse(course_seq);
+	@PutMapping("/api/course")
+	public void modifyCourse(@RequestBody ModifiedCourse modifiedCourse) {
+		courseService.modifyCourse(modifiedCourse);
 	}
 	
 	// 경로 삭제
@@ -79,6 +80,14 @@ public class CourseController {
 	public void deleteCourse(@PathVariable("course_seq") int course_seq) {
 		courseService.deleteMap(course_seq);
 		courseService.deleteCourse(course_seq);
+	}
+	
+	// 경로 삭제 - 다수
+	@DeleteMapping("/api/course")
+	public void deleteSelectedBoard(@RequestBody List<Integer> courseSeqList)  {
+		System.out.println(courseSeqList);
+		courseService.deleteSelectedMap(courseSeqList);
+		courseService.deleteSelectedCourse(courseSeqList);
 	}
 	
 }

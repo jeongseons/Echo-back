@@ -11,6 +11,7 @@ import com.smhrd.echo.mapper.CourseMapper;
 import com.smhrd.echo.model.CourseInfo;
 import com.smhrd.echo.model.CourseList;
 import com.smhrd.echo.model.MapInfo;
+import com.smhrd.echo.model.ModifiedCourse;
 import com.smhrd.echo.model.Pair;
 
 @Service
@@ -35,8 +36,8 @@ public class CourseService {
 		return courseMapper.getMap(course_seq);
 	}
 	
-	public void modifyCourse(int course_seq) {
-		courseMapper.modifyCourse(course_seq);
+	public void modifyCourse(ModifiedCourse modifiedCourse) {
+		courseMapper.modifyCourse(modifiedCourse);
 	}
 	
 	public void deleteCourse(int course_seq) {
@@ -46,5 +47,14 @@ public class CourseService {
 	public void deleteMap(int course_seq) {
 		courseMapper.deleteMap(course_seq);
 	}
+	
+	public void deleteSelectedCourse(List<Integer> courseSeqList) {
+		courseMapper.deleteSelectedCourse(courseSeqList);
+	}
+	
+	public void deleteSelectedMap(List<Integer> courseSeqList) {
+		courseMapper.deleteSelectedMap(courseSeqList);
+	}
+	
 	
 }

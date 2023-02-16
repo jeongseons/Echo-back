@@ -10,6 +10,7 @@ import org.apache.ibatis.annotations.Mapper;
 import com.smhrd.echo.model.CourseInfo;
 import com.smhrd.echo.model.CourseList;
 import com.smhrd.echo.model.MapInfo;
+import com.smhrd.echo.model.ModifiedCourse;
 import com.smhrd.echo.model.Pair;
 
 
@@ -24,10 +25,14 @@ public interface CourseMapper {
 	
 	public List<MapInfo> getMap(int course_seq);
 	
-	public void modifyCourse(int course_seq);
+	public void modifyCourse(ModifiedCourse modifiedCourse);
 	
 	public void deleteCourse(int course_seq);
 	
 	public void deleteMap(int course_seq);
 	
+	public void deleteSelectedCourse(List<Integer> courseSeqList);
+	
+	public void deleteSelectedMap(List<Integer> courseSeqList);
+
 }
