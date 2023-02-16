@@ -1,7 +1,9 @@
 package com.smhrd.echo.controller;
 
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,14 +20,13 @@ import com.smhrd.echo.model.Calendar;
 import com.smhrd.echo.model.CalendarInfo;
 import com.smhrd.echo.model.Group;
 import com.smhrd.echo.model.Joining_Group;
-import com.smhrd.echo.model.UserInfo;
 
 @RestController
 public class GroupController {
 
 	@Autowired
 	GroupService groupService;
-
+	
 	@GetMapping("/api/grouplist")
 	public List<Group> getGroupList(@RequestParam String user_id) {// 그룹 리스트 불러오기
 

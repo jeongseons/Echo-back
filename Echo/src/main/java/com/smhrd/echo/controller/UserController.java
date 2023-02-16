@@ -1,5 +1,9 @@
 package com.smhrd.echo.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,8 +13,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.gson.Gson;
 import com.smhrd.echo.model.MyPageInfo;
+import com.smhrd.echo.model.PersonProfile;
 import com.smhrd.echo.model.UserInfo;
+import com.smhrd.echo.service.BoardService;
+import com.smhrd.echo.service.CourseService;
 import com.smhrd.echo.service.UserService;
 
 @RestController
@@ -18,6 +26,10 @@ public class UserController {
 	
 	@Autowired
 	UserService userService;	
+	@Autowired
+	BoardService boardService;
+	@Autowired
+	CourseService courseService;
 	
 	@PostMapping("/api/user")
 	public String joinUser(@RequestBody UserInfo user) {
@@ -48,5 +60,17 @@ public class UserController {
     	return userService.getMyPage(user_id);
 	}
 	
+	@GetMapping("/api/user/profile/{user_id}")
+	public PersonProfile getPersonProfile(@PathVariable String user_id) {
+	    PersonProfile personProfile = new PersonProfile();
+	    
+	    personProfile.setPersonInfo(userService.getMyPage(user_id));
+	    personProfile.setBoardList(boardService.viewBoardList(user_id));
+	    personProfile.setCourseList(courseService.getCourse(user_id));
+
+		return personProfile;
+	}
+	
+
 }
 

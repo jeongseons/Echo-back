@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smhrd.echo.mapper.CourseMapper">
+
+	<insert id="addCourse" parameterType="com.smhrd.echo.model.CourseInfo">
+		<selectKey keyProperty="course_seq" resultType="int" order="AFTER">
+			select max(course_seq) from course_info
+		</selectKey>
+		INSERT INTO course_info(course_seq, user_id, course_title,
+		course_time, course_alt, course_distance, course_start_dt, course_end_dt, course_open, course_img)
+		VALUES(null, #{user_id}, #{course_title}, #{course_time},
+		#{course_alt}, #{course_distance}, #{course_start_dt}, #{course_end_dt}, #{course_open}, #{course_img})
+	</insert>
+
+	<insert id="addMap" parameterType="java.util.Map">
+		insert into map_info(map_seq, course_seq, lat, lng) values
+		<foreach collection="latlngArray" item="item" separator=",">
+		(null, #{course_seq}, #{item.first}, #{item.second})
+		</foreach>
+	</insert>
+	
+	<select id="getCourse" resultType="com.smhrd.echo.model.CourseList">
+		select course_seq, user_id, course_title, course_time, course_alt, course_distance, course_start_dt, course_end_dt, course_open, course_img, 
+		(select lat from map_info where map_seq = (select min(map_seq) from map_info where course_seq = ci.course_seq)) as start_lat, 
+		(select lng from map_info where map_seq = (select min(map_seq) from map_info where course_seq = ci.course_seq)) as start_lng
+		from course_info ci where user_id = #{user_id}
+	</select>
+	
+	<select id="getMap" resultType="com.smhrd.echo.model.MapInfo">
+		select * from map_info where course_seq = #{course_seq}
+	</select>
+	
+	<update id="modifyCourse">
+		update course_info set course_title = #{course_title}, course_open = #{course_open} where course_seq = #{course_seq}
+	</update>
+	
+	<delete id="deleteCourse">
+		delete from course_info where course_seq = #{course_seq}
+	</delete>
+	
+	<delete id="deleteMap">
+		delete from map_info where course_seq = #{course_seq}
+	</delete>
+	
+	<delete id="deleteSelectedCourse">
+	delete from course_info where course_seq in(
+			<foreach collection="courseSeqList" item="item" separator=",">
+				#{item}
+			</foreach>
+	)
+	</delete>
+	
+	<delete id="deleteSelectedMap">
+	delete from map_info where course_seq in(
+			<foreach collection="courseSeqList" item="item" separator=",">
+				#{item}
+			</foreach>
+	)
+	</delete>
+	
+</mapper>
