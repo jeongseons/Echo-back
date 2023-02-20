@@ -21,6 +21,8 @@ public class BoardListInfo {
     private String user_id;
     
     private String mnt_name;
+    
+    private int course_seq;
 
     private String user_nick;
     
@@ -32,5 +34,7 @@ public class BoardListInfo {
     
     // 작성자 프로필 사진
     private String user_profile_img;
+    
+    private String course_img;
     
 }

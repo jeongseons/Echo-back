@@ -26,6 +26,13 @@
 		from course_info ci where user_id = #{user_id}
 	</select>
 	
+		<select id="getOneCourse" resultType="com.smhrd.echo.model.CourseList">
+		select course_seq, user_id, course_title, course_time, course_alt, course_distance, course_start_dt, course_end_dt, course_open, course_img, 
+		(select lat from map_info where map_seq = (select min(map_seq) from map_info where course_seq = ci.course_seq)) as start_lat, 
+		(select lng from map_info where map_seq = (select min(map_seq) from map_info where course_seq = ci.course_seq)) as start_lng
+		from course_info ci where course_seq = #{course_seq}
+	</select>
+	
 	<select id="getMap" resultType="com.smhrd.echo.model.MapInfo">
 		select * from map_info where course_seq = #{course_seq}
 	</select>

@@ -32,6 +32,10 @@ public class CourseService {
 		return courseMapper.getCourse(user_id);
 	}
 	
+	public List<CourseList> getOneCourse(int course_seq){
+		return courseMapper.getOneCourse(course_seq);
+	}
+	
 	public List<MapInfo> getMap(int course_seq){
 		return courseMapper.getMap(course_seq);
 	}

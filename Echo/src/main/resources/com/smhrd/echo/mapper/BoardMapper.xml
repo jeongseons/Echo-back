@@ -3,11 +3,12 @@
 <mapper namespace="com.smhrd.echo.mapper.BoardMapper">
 
 	<select id="viewBoardList" resultType="com.smhrd.echo.model.BoardListInfo">
-		select board_seq, board_title, board_content, board_file, board_dt, user_id, mnt_name, 
+		select board_seq, board_title, board_content, board_file, board_dt, user_id, mnt_name, course_seq, 
 		(select user_nick from user_info where user_id = bi.user_id) as user_nick,
 		(select user_profile_img from user_info where user_id = bi.user_id) as user_profile_img,
 		(select count(*) from recommend_info where board_seq = bi.board_seq ) as board_reco_cnt,
-		(select count(*) from comment_info where board_seq = bi.board_seq ) as board_cmt_cnt 
+		(select count(*) from comment_info where board_seq = bi.board_seq) as board_cmt_cnt,
+		(select course_img from course_info where course_seq = bi.course_seq) as course_img
 		from board_info bi
 		<if test="user_id != null">
     	where user_id = #{user_id}
@@ -16,8 +17,8 @@
 	</select>
 	
 	<insert id="addBoard">
-		insert into board_info(board_seq, board_title, board_content, board_file, board_dt, user_id, mnt_name)
-		value(null, #{board_title}, #{board_content}, #{board_file}, now(), #{user_id}, #{mnt_name})
+		insert into board_info(board_seq, board_title, board_content, board_file, board_dt, user_id, mnt_name, course_seq)
+		value(null, #{board_title}, #{board_content}, #{board_file}, now(), #{user_id}, #{mnt_name}, #{course_seq})
 	</insert>
 	
 	<delete id="deleteBoard">
@@ -26,7 +27,7 @@
 	
 	<update id="modifyBoard">
 	update board_info set board_title = #{board_title}, board_content = #{board_content},
-	board_file = #{board_file}, mnt_name = #{mnt_name} where board_seq = #{board_seq}
+	board_file = #{board_file}, mnt_name = #{mnt_name}, course_seq = #{course_seq} where board_seq = #{board_seq}
 	</update>
 	
 	<delete id="deleteSelectedBoard">

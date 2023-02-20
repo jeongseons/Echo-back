@@ -54,15 +54,21 @@ public class CourseController {
 	}
 	
 	// 경로 목록 조회
-	@GetMapping("/api/course")
-	public List<CourseList> getCourse(@RequestParam("id") String user_id) {
+	@GetMapping("/api/course/user/{user_id}")
+	public List<CourseList> getCourse(@PathVariable("user_id") String user_id) {
 		System.out.println(user_id);
 		System.out.println(courseService.getCourse(user_id));
 		return courseService.getCourse(user_id);
 	}
 	
-	// 지도 정보 조회
+	// 단일 경로 조회
 	@GetMapping("/api/course/{course_seq}")
+	public List<CourseList> getOneCourse(@PathVariable("course_seq") int course_seq) {
+		return courseService.getOneCourse(course_seq);
+	}
+	
+	// 지도 정보 조회
+	@GetMapping("/api/course/{course_seq}/map")
 	public List<MapInfo> getMap(@PathVariable("course_seq") int course_seq){
 		System.out.println(course_seq);
 		System.out.println(courseService.getMap(course_seq));

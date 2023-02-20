@@ -23,6 +23,8 @@ public interface CourseMapper {
 	
 	public List<CourseList> getCourse(String user_id);
 	
+	public List<CourseList> getOneCourse(int course_seq);
+	
 	public List<MapInfo> getMap(int course_seq);
 	
 	public void modifyCourse(ModifiedCourse modifiedCourse);

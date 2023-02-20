@@ -21,4 +21,6 @@ public class BoardInfo {
 
 	    private String mnt_name;
 	    
+	    private int course_seq;
+	    
 }
