@@ -56,11 +56,11 @@ public class WebSocketHandler extends TextWebSocketHandler{
                         
                         JSONObject obj = new JSONObject();
                      obj.put("type", "getId");
-                     obj.put("sessionId", key);
+                     obj.put("sessionId", session.getId());
                      obj.put("message", message.getPayload());
                      System.out.println("::::::::::::::::::::::::::::::::::::::::::::::::::::::");
                      System.out.println(obj.toJSONString());
-                  System.out.println("::::::::::::::::::::::::::::::::::::::::::::::::::::::");
+                     System.out.println("::::::::::::::::::::::::::::::::::::::::::::::::::::::");
                      s.sendMessage(new TextMessage(obj.toJSONString()));
                     }
                 }
