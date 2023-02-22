@@ -60,7 +60,7 @@ public class WebSocketHandler extends TextWebSocketHandler{
                      obj.put("message", message.getPayload());
                      System.out.println("::::::::::::::::::::::::::::::::::::::::::::::::::::::");
                      System.out.println(obj.toJSONString());
-                     System.out.println("::::::::::::::::::::::::::::::::::::::::::::::::::::::");
+                  System.out.println("::::::::::::::::::::::::::::::::::::::::::::::::::::::");
                      s.sendMessage(new TextMessage(obj.toJSONString()));
                     }
                 }

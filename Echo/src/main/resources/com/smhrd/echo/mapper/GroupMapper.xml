@@ -21,7 +21,8 @@
 		select a.user_nick as user_nick, a.user_profile_img as
 		user_profile_img,
 		b.group_auth as group_auth,
-		a.user_id as user_id
+		a.user_id as user_id,
+		a.user_type as user_type
 		from user_info a,
 		joining_group b
 		where a.user_id = b.user_id and b.group_seq = #{seq} and b.group_auth != "대기중"

@@ -27,4 +27,6 @@ public class Joining_Group {
 	//유저 닉네임
 	private String user_nick;
 	
+	private String user_type;
+	
 }
