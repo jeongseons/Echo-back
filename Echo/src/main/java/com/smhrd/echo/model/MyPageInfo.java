@@ -19,4 +19,6 @@ public class MyPageInfo {
     
     private int user_course_cnt;
     
+    private String user_type;
+    
 }
