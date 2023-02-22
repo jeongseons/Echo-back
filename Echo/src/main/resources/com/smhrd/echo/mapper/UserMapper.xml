@@ -12,7 +12,7 @@
 	</select>
 	
 	<update id="modifyUser">
-		update user_info set user_nick = #{user_nick} where user_id = #{user_id}
+		update user_info set user_nick = #{user_nick}, user_type = #{user_type} where user_id = #{user_id}
 	</update>
 	
 	<delete id="deleteUser">
@@ -20,7 +20,7 @@
 	</delete>
 
 	<select id="getMyPage" parameterType="String" resultType="com.smhrd.echo.model.MyPageInfo">
-		select user_id, user_nick, user_birthdate, user_profile_img, user_gender,
+		select user_id, user_nick, user_birthdate, user_profile_img, user_gender, user_type,
 		(select count(*) from board_info where user_id = #{user_id}) as user_board_cnt,
 		(select count(*) from course_info where user_id = #{user_id}) as user_course_cnt
 		from user_info 

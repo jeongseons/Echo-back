@@ -14,6 +14,7 @@ public class UserInfo {
     private String user_profile_img;
 
     private String user_gender;
-
+    
+    private String user_type;
 
 }
